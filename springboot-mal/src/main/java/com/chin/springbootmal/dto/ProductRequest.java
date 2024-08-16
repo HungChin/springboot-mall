@@ -1,21 +1,25 @@
-package com.chin.springbootmal.model;
+package com.chin.springbootmal.dto;
 
 import com.chin.springbootmal.constant.PoductCategory;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.util.Date;
 
 @Data
-public class Product {
+public class ProductRequest {
 
-    private Integer productId;
+    @NotNull
     private String productName;
+    @NotNull
     private PoductCategory category;
+    @NotNull
     private String imageUrl;
+    @NotNull
     private Integer price;
+    @NotNull
     private Integer stock;
     private String description;
-    private Date createdDate;
-    private Date lastModifiedDate;
 
 }
