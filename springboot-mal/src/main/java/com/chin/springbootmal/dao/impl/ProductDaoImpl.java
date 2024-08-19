@@ -1,10 +1,14 @@
 package com.chin.springbootmal.dao.impl;
 
+import com.chin.springbootmal.constant.PoductCategory;
 import com.chin.springbootmal.dao.ProductDao;
+import com.chin.springbootmal.dto.ProductQueryParmeter;
 import com.chin.springbootmal.dto.ProductRequest;
 import com.chin.springbootmal.model.Product;
 import com.chin.springbootmal.rowmapper.ProductRowMapper;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -50,5 +54,52 @@ public class ProductDaoImpl implements ProductDao {
         }else{
             return null;
         }
+    }
+
+    @Override
+    public void updateProduct(Integer productId, ProductRequest productRequest) {
+        String sql = "UPDATE product SET product_name = :productName,category = :category, " +
+                "image_url = :imageUrl, price = :price, stock = :stock, description = :description, last_modified_date = :lastModifiedDate " +
+                "WHERE product_id = :productId";
+        Map <String,Object> map = new HashMap<>();
+        map.put("productId",productId);
+        map.put("productName",productRequest.getProductName());
+        map.put("category",productRequest.getCategory().toString());
+        map.put("imageUrl",productRequest.getImageUrl());
+        map.put("price",productRequest.getPrice());
+        map.put("stock",productRequest.getStock());
+        map.put("description",productRequest.getDescription());
+        map.put("lastModifiedDate",new Date());
+        namedParameterJdbcTemplate.update(sql,map);
+    }
+
+    @Override
+    public void deleteProduct(Integer productId) {
+        String sql = "DELETE FROM product WHERE product_id = :productId";
+        Map <String,Object> map = new HashMap<>();
+        map.put("productId",productId);
+        namedParameterJdbcTemplate.update(sql,map);
+    }
+
+    @Override
+    public List<Product> getAllProduct(ProductQueryParmeter parmeter) {
+        String sql = "SELECT product_id, product_name, category, image_url, price, stock, " +
+                "description, created_date, last_modified_date FROM product WHERE 1=1";
+        Map <String,Object> map = new HashMap<>();
+        if (parmeter.getCategory() != null){
+            String category = parmeter.getCategory().name();
+            sql += " AND category = :category";
+            map.put("category",category);
+        }
+        if(StringUtils.isNotEmpty(parmeter.getSearch())){
+            String search = parmeter.getSearch();
+            sql += " AND product_name LIKE :search";
+            map.put("search","%" + search + "%");
+        }
+        sql += " ORDER BY "+parmeter.getOrderByColumn()+" "+(parmeter.getSortMethod().equals("desc")?"DESC":"");
+        sql += " LIMIT :limit OFFSET :offset";
+        map.put("limit",parmeter.getLimit());
+        map.put("offset",parmeter.getOffset());
+        return namedParameterJdbcTemplate.query(sql, map,new BeanPropertyRowMapper<>(Product.class));
     }
 }
