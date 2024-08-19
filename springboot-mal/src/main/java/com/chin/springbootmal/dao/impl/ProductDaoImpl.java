@@ -86,6 +86,7 @@ public class ProductDaoImpl implements ProductDao {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, " +
                 "description, created_date, last_modified_date FROM product WHERE 1=1";
         Map <String,Object> map = new HashMap<>();
+        // 條件查詢
         if (parmeter.getCategory() != null){
             String category = parmeter.getCategory().name();
             sql += " AND category = :category";
@@ -96,10 +97,31 @@ public class ProductDaoImpl implements ProductDao {
             sql += " AND product_name LIKE :search";
             map.put("search","%" + search + "%");
         }
+        // 排序設定
         sql += " ORDER BY "+parmeter.getOrderByColumn()+" "+(parmeter.getSortMethod().equals("desc")?"DESC":"");
+
+        // 分頁筆數設定
         sql += " LIMIT :limit OFFSET :offset";
         map.put("limit",parmeter.getLimit());
         map.put("offset",parmeter.getOffset());
         return namedParameterJdbcTemplate.query(sql, map,new BeanPropertyRowMapper<>(Product.class));
+    }
+
+    @Override
+    public Integer getProductCount(ProductQueryParmeter parmeter) {
+        String sql = "SELECT COUNT(*) FROM product WHERE 1=1";
+        Map <String,Object> map = new HashMap<>();
+        // 條件查詢
+        if (parmeter.getCategory() != null){
+            String category = parmeter.getCategory().name();
+            sql += " AND category = :category";
+            map.put("category",category);
+        }
+        if(StringUtils.isNotEmpty(parmeter.getSearch())){
+            String search = parmeter.getSearch();
+            sql += " AND product_name LIKE :search";
+            map.put("search","%" + search + "%");
+        }
+        return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
     }
 }

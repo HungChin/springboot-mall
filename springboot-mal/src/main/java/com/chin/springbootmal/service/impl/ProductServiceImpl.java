@@ -55,4 +55,10 @@ public class ProductServiceImpl implements ProductService {
         LOG.info("執行productDao.getAllProduct");
         return productDao.getAllProduct(parmeter);
     }
+
+    @Override
+    public Integer getProductCount(ProductQueryParmeter parmeter) {
+        LOG.info("執行productDao.getProductCount");
+        return productDao.getProductCount(parmeter);
+    }
 }
