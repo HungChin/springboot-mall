@@ -1,6 +1,6 @@
 package com.chin.springbootmal.model;
 
-import com.chin.springbootmal.constant.PoductCategory;
+import com.chin.springbootmal.constant.ProductCategory;
 import lombok.Data;
 
 import java.util.Date;
@@ -10,7 +10,7 @@ public class Product {
 
     private Integer productId;
     private String productName;
-    private PoductCategory category;
+    private ProductCategory category;
     private String imageUrl;
     private Integer price;
     private Integer stock;

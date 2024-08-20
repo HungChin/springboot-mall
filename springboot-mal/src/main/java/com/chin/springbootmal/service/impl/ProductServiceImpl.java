@@ -1,6 +1,5 @@
 package com.chin.springbootmal.service.impl;
 
-import com.chin.springbootmal.constant.PoductCategory;
 import com.chin.springbootmal.dao.ProductDao;
 import com.chin.springbootmal.dto.ProductQueryParmeter;
 import com.chin.springbootmal.dto.ProductRequest;

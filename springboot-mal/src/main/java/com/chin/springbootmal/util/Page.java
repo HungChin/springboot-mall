@@ -12,7 +12,7 @@ public class Page <T>{
     //設定從第幾筆開始查詢
     private Integer offset;
     //總筆數
-    private Integer tortal;
+    private Integer total;
     //分頁筆數資料
     private List<T> results;
 

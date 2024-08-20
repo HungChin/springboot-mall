@@ -1,6 +1,6 @@
 package com.chin.springbootmal.dto;
 
-import com.chin.springbootmal.constant.PoductCategory;
+import com.chin.springbootmal.constant.ProductCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductQueryParmeter {
-    private PoductCategory category;
+    private ProductCategory category;
     private String search;
     private String orderByColumn;
     private String sortMethod;

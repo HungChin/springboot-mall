@@ -1,11 +1,8 @@
 package com.chin.springbootmal.dto;
 
-import com.chin.springbootmal.constant.PoductCategory;
+import com.chin.springbootmal.constant.ProductCategory;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NonNull;
-
-import java.util.Date;
 
 @Data
 public class ProductRequest {
@@ -13,7 +10,7 @@ public class ProductRequest {
     @NotNull
     private String productName;
     @NotNull
-    private PoductCategory category;
+    private ProductCategory category;
     @NotNull
     private String imageUrl;
     @NotNull

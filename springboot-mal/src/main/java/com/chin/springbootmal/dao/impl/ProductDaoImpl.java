@@ -1,6 +1,5 @@
 package com.chin.springbootmal.dao.impl;
 
-import com.chin.springbootmal.constant.PoductCategory;
 import com.chin.springbootmal.dao.ProductDao;
 import com.chin.springbootmal.dto.ProductQueryParmeter;
 import com.chin.springbootmal.dto.ProductRequest;
@@ -87,16 +86,7 @@ public class ProductDaoImpl implements ProductDao {
                 "description, created_date, last_modified_date FROM product WHERE 1=1";
         Map <String,Object> map = new HashMap<>();
         // 條件查詢
-        if (parmeter.getCategory() != null){
-            String category = parmeter.getCategory().name();
-            sql += " AND category = :category";
-            map.put("category",category);
-        }
-        if(StringUtils.isNotEmpty(parmeter.getSearch())){
-            String search = parmeter.getSearch();
-            sql += " AND product_name LIKE :search";
-            map.put("search","%" + search + "%");
-        }
+        sql = addSqlConnect(sql,map,parmeter);
         // 排序設定
         sql += " ORDER BY "+parmeter.getOrderByColumn()+" "+(parmeter.getSortMethod().equals("desc")?"DESC":"");
 
@@ -112,6 +102,12 @@ public class ProductDaoImpl implements ProductDao {
         String sql = "SELECT COUNT(*) FROM product WHERE 1=1";
         Map <String,Object> map = new HashMap<>();
         // 條件查詢
+        sql = addSqlConnect(sql,map,parmeter);
+        return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
+    }
+
+    private String addSqlConnect(String sql,Map map,ProductQueryParmeter parmeter){
+        // 條件查詢
         if (parmeter.getCategory() != null){
             String category = parmeter.getCategory().name();
             sql += " AND category = :category";
@@ -122,6 +118,7 @@ public class ProductDaoImpl implements ProductDao {
             sql += " AND product_name LIKE :search";
             map.put("search","%" + search + "%");
         }
-        return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
+        return sql;
     }
 }
+

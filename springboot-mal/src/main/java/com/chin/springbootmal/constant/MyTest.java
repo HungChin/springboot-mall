@@ -2,12 +2,11 @@ package com.chin.springbootmal.constant;
 
 public class MyTest {
     public static void main(String[] args) {
-        PoductCategory poductCategory = PoductCategory.FOOD;
+        ProductCategory poductCategory = ProductCategory.FOOD;
         String categoryName = poductCategory.name();
         System.out.println(categoryName);
-
         String car = "CAR";
-        PoductCategory category = PoductCategory.valueOf(car);
+        ProductCategory category = ProductCategory.valueOf(car);
         System.out.println(category);
     }
 }

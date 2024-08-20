@@ -1,6 +1,6 @@
 package com.chin.springbootmal.controller;
 
-import com.chin.springbootmal.constant.PoductCategory;
+import com.chin.springbootmal.constant.ProductCategory;
 import com.chin.springbootmal.dto.ProductQueryParmeter;
 import com.chin.springbootmal.dto.ProductRequest;
 import com.chin.springbootmal.model.Product;
@@ -122,7 +122,7 @@ public class ProductCtroller {
     @GetMapping("/products")
     @Validated
     public ResponseEntity<Page<Product>> getAllProduct(
-            @RequestParam(required = false)PoductCategory category
+            @RequestParam(required = false) ProductCategory category
             ,@RequestParam(required = false) String search
             ,@RequestParam(defaultValue = "created_date") String orderByColumn
             ,@RequestParam(defaultValue = "desc") String sortMethod
@@ -133,11 +133,11 @@ public class ProductCtroller {
         //查詢挑檔後產品資料
         List<Product> productList = productService.getAllProduct(parmeter);
         //查詢總筆數
-        Integer tortal = productService.getProductCount(parmeter);
+        Integer total = productService.getProductCount(parmeter);
         Page<Product> pageData = new Page<>();
         pageData.setLimit(limit);
         pageData.setOffset(offset);
-        pageData.setTortal(tortal);
+        pageData.setTotal(total);
         pageData.setResults(productList);
         return ResponseEntity.ok(pageData);
     }
