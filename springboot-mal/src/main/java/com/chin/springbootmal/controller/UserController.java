@@ -1,6 +1,7 @@
 package com.chin.springbootmal.controller;
 
-import com.chin.springbootmal.dto.UserRequest;
+import com.chin.springbootmal.dto.user.UserLoginRequest;
+import com.chin.springbootmal.dto.user.UserRegisterRequest;
 import com.chin.springbootmal.model.User;
 import com.chin.springbootmal.service.UserService;
 import jakarta.validation.Valid;
@@ -18,12 +19,22 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/user/register")
-    public ResponseEntity<User> register(@RequestBody @Valid UserRequest userRequest) {
+    public ResponseEntity<User> register(@RequestBody @Valid UserRegisterRequest userRequest) {
         Integer userId = userService.createUser(userRequest);
-        User user = userService.getUser(userId);
+        User user = userService.getUserByUserId(userId);
         if (user != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(user);
         }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @PostMapping(value="/user/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userRequest){
+        User user = userService.login(userRequest);
+        if (user != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

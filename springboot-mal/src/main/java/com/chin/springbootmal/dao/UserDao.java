@@ -1,12 +1,12 @@
 package com.chin.springbootmal.dao;
 
 
-import com.chin.springbootmal.dto.UserRequest;
+import com.chin.springbootmal.dto.user.UserRegisterRequest;
 import com.chin.springbootmal.model.User;
 
 public interface UserDao {
 
-    public Integer createUser(UserRequest userRequest);
+    public Integer createUser(UserRegisterRequest userRequest);
 
     public User getUserByUserId(Integer userId);
 

@@ -1,7 +1,7 @@
 package com.chin.springbootmal.dao;
 
-import com.chin.springbootmal.dto.ProductQueryParmeter;
-import com.chin.springbootmal.dto.ProductRequest;
+import com.chin.springbootmal.dto.product.ProductQueryParmeter;
+import com.chin.springbootmal.dto.product.ProductRequest;
 import com.chin.springbootmal.model.Product;
 
 import java.util.List;

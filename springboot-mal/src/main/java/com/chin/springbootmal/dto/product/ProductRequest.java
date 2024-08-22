@@ -1,4 +1,4 @@
-package com.chin.springbootmal.dto;
+package com.chin.springbootmal.dto.product;
 
 import com.chin.springbootmal.constant.ProductCategory;
 import jakarta.validation.constraints.NotNull;

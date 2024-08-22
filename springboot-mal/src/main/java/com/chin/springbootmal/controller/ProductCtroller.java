@@ -1,8 +1,8 @@
 package com.chin.springbootmal.controller;
 
 import com.chin.springbootmal.constant.ProductCategory;
-import com.chin.springbootmal.dto.ProductQueryParmeter;
-import com.chin.springbootmal.dto.ProductRequest;
+import com.chin.springbootmal.dto.product.ProductQueryParmeter;
+import com.chin.springbootmal.dto.product.ProductRequest;
 import com.chin.springbootmal.model.Product;
 import com.chin.springbootmal.service.ProductService;
 import com.chin.springbootmal.util.Page;

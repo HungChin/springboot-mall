@@ -1,7 +1,7 @@
 package com.chin.springbootmal.controller;
 
 import com.chin.springbootmal.constant.ProductCategory;
-import com.chin.springbootmal.dto.ProductRequest;
+import com.chin.springbootmal.dto.product.ProductRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
@@ -17,14 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ProductCtrollerTest {
+public class ProductCtrollerTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
 

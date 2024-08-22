@@ -1,12 +1,10 @@
-package com.chin.springbootmal.dto;
+package com.chin.springbootmal.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-public class UserRequest {
+public class UserRegisterRequest {
     @NotBlank
     private String email;
     @NotBlank

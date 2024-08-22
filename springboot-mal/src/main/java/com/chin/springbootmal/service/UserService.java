@@ -1,11 +1,12 @@
 package com.chin.springbootmal.service;
 
-import com.chin.springbootmal.dto.UserRequest;
+import com.chin.springbootmal.dto.user.UserLoginRequest;
+import com.chin.springbootmal.dto.user.UserRegisterRequest;
 import com.chin.springbootmal.model.User;
 
 public interface UserService {
 
-    public Integer createUser(UserRequest userRequest);
-    public User getUser(Integer userId);
-
+    public Integer createUser(UserRegisterRequest userRequest);
+    public User getUserByUserId(Integer userId);
+    public User login(UserLoginRequest userRequest);
 }
