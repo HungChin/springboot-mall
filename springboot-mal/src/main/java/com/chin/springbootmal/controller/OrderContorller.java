@@ -20,6 +20,12 @@ public class OrderContorller {
     @Autowired
     private OrderService orderService;
 
+    /**
+     * 創建訂單及明細
+     * @param userId 使用者Id
+     * @param orderRequest 創建訂單請求
+     * @return ResponseEntity<> CreateOrderResponse
+     */
     @PostMapping(value ="/user/{userId}/order")
     public ResponseEntity<CreateOrderResponse> orderCreate(@PathVariable Integer userId, @RequestBody @Valid CreateOrderRequest orderRequest) {
         try{
@@ -27,7 +33,10 @@ public class OrderContorller {
             CreateOrderResponse createOrderResponse = orderService.getOrder(orderId);
             return ResponseEntity.status(HttpStatus.CREATED).body(createOrderResponse);
         }catch (Exception ex) {
-            ex.printStackTrace();
+            String message  = ex.getMessage();
+            if(message.equals(HttpStatus.BAD_REQUEST.toString())){
+                return   ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

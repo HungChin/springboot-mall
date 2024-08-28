@@ -18,6 +18,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 使用者註冊
+     * @param userRequest 註冊使用者請求
+     * @return ResponseEntity<> User 使用者data
+     */
     @PostMapping(value = "/user/register")
     public ResponseEntity<User> register(@RequestBody @Valid UserRegisterRequest userRequest) {
         Integer userId = userService.createUser(userRequest);
@@ -29,6 +34,11 @@ public class UserController {
         }
     }
 
+    /**
+     *
+     * @param userRequest 登入使用者請求
+     * @return ResponseEntity<> User 使用者data
+     */
     @PostMapping(value="/user/login")
     public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userRequest){
         User user = userService.login(userRequest);

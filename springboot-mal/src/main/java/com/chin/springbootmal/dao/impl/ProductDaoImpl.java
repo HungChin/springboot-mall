@@ -21,6 +21,12 @@ public class ProductDaoImpl implements ProductDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    /**
+     * 取得產品data
+     * @param productId 產品Id
+     * @return 產品data
+     */
     @Override
     public Product getProductId(Integer productId) {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, created_date, last_modified_date FROM product WHERE product_id = :productId";
@@ -31,6 +37,11 @@ public class ProductDaoImpl implements ProductDao {
 
     }
 
+    /**
+     * 創建產品
+     * @param productRequest 創建產品請求
+     * @return Integer 產品Id
+     */
     @Override
     public Integer createProduct(ProductRequest productRequest) {
         String sql = "INSERT INTO product(product_name, category, image_url, price, stock, description, created_date, last_modified_date) " +
@@ -55,6 +66,11 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
+    /**
+     * 更新產品
+     * @param productId 產品Id
+     * @param productRequest 更新產品請求
+     */
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
         String sql = "UPDATE product SET product_name = :productName,category = :category, " +
@@ -72,6 +88,10 @@ public class ProductDaoImpl implements ProductDao {
         namedParameterJdbcTemplate.update(sql,map);
     }
 
+    /**
+     * 刪除產品
+     * @param productId 產品Id
+     */
     @Override
     public void deleteProduct(Integer productId) {
         String sql = "DELETE FROM product WHERE product_id = :productId";
@@ -80,6 +100,11 @@ public class ProductDaoImpl implements ProductDao {
         namedParameterJdbcTemplate.update(sql,map);
     }
 
+    /**
+     * 查詢全部產品(條件參數查詢)
+     * @param parmeter 查詢產品條件參數
+     * @return List<> Product 產品data
+     */
     @Override
     public List<Product> getAllProduct(ProductQueryParmeter parmeter) {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, " +
@@ -97,6 +122,11 @@ public class ProductDaoImpl implements ProductDao {
         return namedParameterJdbcTemplate.query(sql, map,new BeanPropertyRowMapper<>(Product.class));
     }
 
+    /**
+     * 查詢產品種類數量
+     * @param parmeter 查詢產品條件參數
+     * @return Integer 產品數量
+     */
     @Override
     public Integer getProductCount(ProductQueryParmeter parmeter) {
         String sql = "SELECT COUNT(*) FROM product WHERE 1=1";
@@ -106,6 +136,13 @@ public class ProductDaoImpl implements ProductDao {
         return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
     }
 
+    /**
+     * 串接查詢SQL語句
+     * @param sql 查詢相關sql
+     * @param map 查詢條件map
+     * @param parmeter 查詢條件參數
+     * @return 回傳查詢sql 串接字串
+     */
     private String addSqlConnect(String sql,Map map,ProductQueryParmeter parmeter){
         // 條件查詢
         if (parmeter.getCategory() != null){
