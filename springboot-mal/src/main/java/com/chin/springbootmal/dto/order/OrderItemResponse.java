@@ -3,7 +3,7 @@ package com.chin.springbootmal.dto.order;
 import lombok.Data;
 
 @Data
-public class CreateOrderItemResponse {
+public class OrderItemResponse {
 
     /** 訂單明細Id */
     private Integer orderItemId;

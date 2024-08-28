@@ -141,7 +141,7 @@ public class ProductDaoImpl implements ProductDao {
      * @param sql 查詢相關sql
      * @param map 查詢條件map
      * @param parmeter 查詢條件參數
-     * @return 回傳查詢sql 串接字串
+     * @return String 回傳查詢sql 串接字串
      */
     private String addSqlConnect(String sql,Map map,ProductQueryParmeter parmeter){
         // 條件查詢

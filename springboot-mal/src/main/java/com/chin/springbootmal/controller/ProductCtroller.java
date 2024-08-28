@@ -133,12 +133,8 @@ public class ProductCtroller {
         //查詢挑檔後產品資料
         List<Product> productList = productService.getAllProduct(parmeter);
         //查詢總筆數
-        Integer total = productService.getProductCount(parmeter);
-        Page<Product> pageData = new Page<>();
-        pageData.setLimit(limit);
-        pageData.setOffset(offset);
-        pageData.setTotal(total);
-        pageData.setResults(productList);
+        Integer tortal = productService.getProductCount(parmeter);
+        Page<Product> pageData = new Page<>(limit,offset,tortal,productList);
         return ResponseEntity.ok(pageData);
     }
 

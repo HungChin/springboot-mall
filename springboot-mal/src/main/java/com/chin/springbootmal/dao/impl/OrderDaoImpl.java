@@ -1,7 +1,8 @@
 package com.chin.springbootmal.dao.impl;
 
 import com.chin.springbootmal.dao.OrderDao;
-import com.chin.springbootmal.dto.order.CreateOrderItemResponse;
+import com.chin.springbootmal.dto.order.OrderItemResponse;
+import com.chin.springbootmal.dto.order.QueryOrderRequest;
 import com.chin.springbootmal.model.Order;
 import com.chin.springbootmal.model.OrderItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,12 +85,12 @@ public class OrderDaoImpl implements OrderDao {
      * @return List<>CreateOrderItemResponse 訂單明細data
      */
     @Override
-    public List<CreateOrderItemResponse> getOrderItemByOrderId(Integer orderId) {
+    public List<OrderItemResponse> getOrderItemByOrderId(Integer orderId) {
         String sql = "SELECT itm.order_item_id,itm.product_id,pdt.product_name,itm.quantity,pdt.price,itm.amount,pdt.stock FROM order_item AS itm " +
                 "LEFT JOIN product AS pdt ON itm.product_id = pdt.product_id WHERE itm.order_id = :orderId";
         Map<String,Object> map = new HashMap<>();
         map.put("orderId",orderId);
-        return namedParameterJdbcTemplate.query(sql,map,new BeanPropertyRowMapper<>(CreateOrderItemResponse.class));
+        return namedParameterJdbcTemplate.query(sql,map,new BeanPropertyRowMapper<>(OrderItemResponse.class));
     }
 
     /**
@@ -107,4 +108,51 @@ public class OrderDaoImpl implements OrderDao {
         map.put("productId",productId);
         namedParameterJdbcTemplate.update(sql,map);
     }
+
+    /**
+     * 查詢使用者底下的訂單及明細資料
+     * @param orderRequest 查詢訂單條件請求
+     * @return List<> Order 訂單資料
+     */
+    @Override
+    public List<Order> getOrders(QueryOrderRequest orderRequest) {
+        String sql = "SELECT * FROM `order` WHERE 1=1";
+        Map<String,Object> map = new HashMap<>();
+        sql = addSqlConnect(sql,orderRequest,map);
+        sql += " ORDER BY created_date DESC";
+        sql += " LIMIT :limit OFFSET :offSet";
+        map.put("limit",orderRequest.getLimit());
+        map.put("offSet",orderRequest.getOffSet());
+        return namedParameterJdbcTemplate.query(sql,map,new BeanPropertyRowMapper<>(Order.class));
+    }
+
+    /**
+     * 查詢使用者底下的訂單總數
+     * @param orderRequest 查詢訂單條件請求
+     * @return Integer 訂單總數量
+     */
+    @Override
+    public Integer getOrdersCount(QueryOrderRequest orderRequest) {
+        String sql = "SELECT COUNT(*) FROM `order` WHERE 1=1";
+        Map<String,Object> map = new HashMap<>();
+        sql = addSqlConnect(sql,orderRequest,map);
+        return namedParameterJdbcTemplate.queryForObject(sql,map, Integer.class);
+    }
+
+    /**
+     * 串接查詢SQL語句
+     * @param sql SQL語句
+     * @param orderRequest 訂單條件請求
+     * @param map 查詢條件map
+     * @return String 回傳查詢sql 串接字串
+     */
+    private String addSqlConnect(String sql,QueryOrderRequest orderRequest,Map<String,Object> map){
+        Integer userId = orderRequest.getUserId();
+        if (userId != null){
+            sql += " AND user_id = :userId";
+            map.put("userId",userId);
+        }
+        return sql;
+    }
+
 }

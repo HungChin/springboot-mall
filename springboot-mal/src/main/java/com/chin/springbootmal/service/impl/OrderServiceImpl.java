@@ -3,10 +3,7 @@ package com.chin.springbootmal.service.impl;
 import com.chin.springbootmal.dao.OrderDao;
 import com.chin.springbootmal.dao.ProductDao;
 import com.chin.springbootmal.dao.UserDao;
-import com.chin.springbootmal.dto.order.BuyItem;
-import com.chin.springbootmal.dto.order.CreateOrderItemResponse;
-import com.chin.springbootmal.dto.order.CreateOrderRequest;
-import com.chin.springbootmal.dto.order.CreateOrderResponse;
+import com.chin.springbootmal.dto.order.*;
 import com.chin.springbootmal.model.Order;
 import com.chin.springbootmal.model.OrderItem;
 import com.chin.springbootmal.model.Product;
@@ -21,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -92,10 +88,41 @@ public class OrderServiceImpl implements OrderService {
      * @return CreateOrderResponse 創建訂單回應
      */
     @Override
-    public CreateOrderResponse getOrder(Integer orderId) {
+    public OrderResponse getOrderByOrderId(Integer orderId) {
         Order order = orderDao.getOrderByOrderId(orderId);
-        List<CreateOrderItemResponse> orderItemResponses = orderDao.getOrderItemByOrderId(orderId);
-        return new CreateOrderResponse(order,orderItemResponses);
+        List<OrderItemResponse> orderItemResponses = orderDao.getOrderItemByOrderId(orderId);
+        return new OrderResponse(order,orderItemResponses);
     }
+
+    /**
+     * 查詢使用者底下的訂單及明細資料
+     * @param orderRequest 查詢訂單條件請求
+     * @return List<> OrderResponse
+     */
+    @Override
+    public List<OrderResponse> getOrders(QueryOrderRequest orderRequest) {
+        List<OrderResponse> orderResponseList = new ArrayList<>();
+        LOG.info("執行orderDao.getOrders 查詢使用者訂單資料");
+        List<Order> orderList = orderDao.getOrders(orderRequest);
+        for (Order order:orderList){
+            LOG.info("執行orderDao.getOrderItemByOrderId 查詢使用者訂單明細資料");
+            List<OrderItemResponse> orderItemList = orderDao.getOrderItemByOrderId(order.getOrderId());
+            OrderResponse orderResponse = new OrderResponse(order,orderItemList);
+            orderResponseList.add(orderResponse);
+        }
+        return orderResponseList;
+    }
+
+    /**
+     * 查詢使用者底下的訂單總數
+     * @param orderRequest 查詢訂單條件請求
+     * @return Integer 訂單總數量
+     */
+    @Override
+    public Integer getOrdersCount(QueryOrderRequest orderRequest) {
+        LOG.info("執行orderDao.getOrdersCount 查詢使用者訂單總數量");
+        return orderDao.getOrdersCount(orderRequest);
+    }
+
 
 }

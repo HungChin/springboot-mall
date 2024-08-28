@@ -1,6 +1,7 @@
 package com.chin.springbootmal.dao;
 
-import com.chin.springbootmal.dto.order.CreateOrderItemResponse;
+import com.chin.springbootmal.dto.order.OrderItemResponse;
+import com.chin.springbootmal.dto.order.QueryOrderRequest;
 import com.chin.springbootmal.model.Order;
 import com.chin.springbootmal.model.OrderItem;
 
@@ -34,7 +35,7 @@ public interface OrderDao {
      * @param orderId 訂單Id
      * @return List<>CreateOrderItemResponse 訂單明細data
      */
-    public List<CreateOrderItemResponse> getOrderItemByOrderId(Integer orderId);
+    public List<OrderItemResponse> getOrderItemByOrderId(Integer orderId);
 
     /**
      * 更新產品庫存數量
@@ -42,4 +43,18 @@ public interface OrderDao {
      * @param productId 產品Id
      */
     public void updateProductStock(int upStock, int productId);
+
+    /**
+     * 查詢使用者底下的訂單及明細資料
+     * @param orderRequest 查詢訂單條件請求
+     * @return List<> Order 訂單資料
+     */
+    public List<Order> getOrders(QueryOrderRequest orderRequest);
+
+    /**
+     * 查詢使用者底下的訂單總數
+     * @param orderRequest 查詢訂單條件請求
+     * @return Integer 訂單總數量
+     */
+    public Integer getOrdersCount(QueryOrderRequest orderRequest);
 }
